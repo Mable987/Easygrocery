@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'dashboard.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Add Categories</h4>
+            <!--            <p class="card-description"> Basic form elements </p>-->
+            <form class="forms-sample" method="post" action="{% url '' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="categorySelect">Category Name</label>
+                    <select class="form-control" id="categorySelect" name="categoryname">
+                        <option value="">Select Category</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Beverages">Beverages</option>
+                        <option value="Snacks">Snacks</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputName2">Product Name</label>
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Product Name"
+                           name="productname">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName3"> Price</label>
+                    <input type="number" class="form-control" id="exampleInputName3" placeholder=" Price"
+                           name="price">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleTextarea1">Description</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category Image</label>
+                    <input type="file" name="categoryimage" class="form-control">
+                </div>
+
+
+                <button type="submit" class="btn btn-primary me-2" fdprocessedid="k2gv35">Submit</button>
+                <button class="btn btn-dark" fdprocessedid="waslqf">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

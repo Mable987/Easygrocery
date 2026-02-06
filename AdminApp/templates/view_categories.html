@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'dashboard.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Category List</h4>
+            <!--                    <p class="card-description"> Add class <code>.table-striped</code>-->
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th> Category Name</th>
+                        <th> Description</th>
+                        <th> Category Image</th>
+                        <th> Action</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in categories %}
+                    <tr>
+
+                        <td> {{c.CategoryName}}</td>
+
+                        <td> {{c.Description}}</td>
+                        <td class="py-1">
+                            {% if c.CategoryImage %}
+                            <img src="{{ c.CategoryImage.url }}" width="80">
+                            {% endif %}
+
+                        </td>
+                        <td>
+                             <a href="{% url 'edit_category' category_id=c.id %}" class="btn btn-outline-primary">Edit</a>
+                             <a href="{% url 'delete_category' category_id=c.id %}" class="btn btn-outline-danger" onclick="return confirm('Are you sure?')">
+                                      Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}
