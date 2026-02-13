@@ -1,10 +1,59 @@
 <!DOCTYPE html>
+{% extends 'dashboard.html' %}
+{% block content %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"> All Products</h4>
+            <!--                    <p class="card-description"> Add class <code>.table-striped</code>-->
+            </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th> Category Name</th>
+                        <th> Product Name</th>
+                        <th> Price</th>
+                        <th> Description</th>
+                        <th> Product Image</th>
+                        <th> Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for p in products %}
+                    <tr>
+                        <td> {{p.Category_Name}}</td>
+                        <td>
+                            {{p.ProductName}}
+                        </td>
+                        <td> {{p.Price}}</td>
+                        <td> {{p.Description}}</td>
+                        <td class="py-1">
+                             {% if p.ProductImage %}
+                            <img src="{{ p.ProductImage.url }}" width="80">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'edit_product' product_id=p.id %}" class="btn btn-outline-primary">Edit</a>
+                            <a href="{% url 'delete_product' product_id=p.id %}" class="btn btn-outline-danger"
+                               onclick="return confirm('Are you sure?')">
+                                Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+{% endblock %}

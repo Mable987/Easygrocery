@@ -10,18 +10,18 @@
 <div class="col-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Add Categories</h4>
+            <h4 class="card-title">Add Products</h4>
             <!--            <p class="card-description"> Basic form elements </p>-->
-            <form class="forms-sample" method="post" action="{% url '' %}" enctype="multipart/form-data">
+            <form class="forms-sample" method="post" action="{% url 'save_product' %}"  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="categorySelect">Category Name</label>
                     <select class="form-control" id="categorySelect" name="categoryname">
                         <option value="">Select Category</option>
-                        <option value="Fruits">Fruits</option>
-                        <option value="Vegetables">Vegetables</option>
-                        <option value="Beverages">Beverages</option>
-                        <option value="Snacks">Snacks</option>
+                        {% for i in categories %}
+                        <option >{{i.CategoryName}}</option>
+                        {% endfor %}
+
                     </select>
                 </div>
 
@@ -42,8 +42,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Category Image</label>
-                    <input type="file" name="categoryimage" class="form-control">
+                    <label class="form-label">Product Image</label>
+                    <input type="file" name="productimage" class="form-control">
                 </div>
 
 

@@ -19,10 +19,12 @@ from django.urls import path, include
 import AdminApp.urls
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 from EasyGrocery import settings
+import WebApp.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('store/', include(AdminApp.urls)),
+    path('easygrocery/', include(WebApp.urls)),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% extends 'dashboard.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Edit Products</h4>
+            <!--            <p class="card-description"> Basic form elements </p>-->
+            <form class="forms-sample" method="post" action="{% url 'update_product' product_id=product.id %}"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="categorySelect">Category Name</label>
+                    <select class="form-control" id="categorySelect" name="categoryname">
+                        <option value="">Select Category</option>
+
+                        {% for i in categories %}
+                        <option value="{{ i.CategoryName }}"
+                                {% if i.CategoryName == product.Category_Name %}
+                                selected
+                                {% endif %}
+                        >
+                            {{ i.CategoryName }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputName2">Product Name</label>
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="Product Name"
+                           name="productname" value="{{product.ProductName}}">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName3"> Price</label>
+                    <input type="number" class="form-control" id="exampleInputName3" placeholder=" Price"
+                           name="price" value="{{product.Price}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleTextarea1">Description</label>
+                    <textarea class="form-control" id="exampleTextarea1" rows="4" name="description">{{ product.Description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Product Image</label>
+                    {% if product.ProductImage %}
+                    <img src="{{ product.ProductImage.url }}" width="80"><br><br>
+                    {% endif %}
+
+                    <input type="file" name="productimage" class="form-control">
+
+                </div>
+
+
+                <button type="submit" class="btn btn-primary me-2" fdprocessedid="k2gv35">Submit</button>
+                <button class="btn btn-dark" fdprocessedid="waslqf">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

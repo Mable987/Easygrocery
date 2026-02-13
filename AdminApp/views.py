@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.utils.datastructures import MultiValueDictKeyError
 
-from AdminApp.models import CategoryDb
+from AdminApp.models import CategoryDb, ProductDb
+from WebApp.models import ContactDb
 
 
 # Create your views here.
@@ -47,14 +48,53 @@ def delete_category(request, category_id):
 
 
 def add_products(request):
-    return render(request, 'add_products.html')
+    categories = CategoryDb.objects.all()
+    return render(request, 'add_products.html', {'categories': categories})
 def view_products(request):
-    return render(request, 'view_products.html')
+    products = ProductDb.objects.all()
+    return render(request, 'view_products.html',{'products': products})
+
+def save_product(request):
+    if request.method == 'POST':
+        CategoryName = request.POST.get('categoryname')
+        ProductName = request.POST.get('productname')
+        Price = request.POST.get('price')
+        Description = request.POST.get('description')
+        ProductImage = request.FILES.get('productimage')
+        obj = ProductDb(Category_Name=CategoryName, ProductName=ProductName, Price=Price, Description=Description,ProductImage=ProductImage)
+        obj.save()
+        return redirect(add_products)
+def edit_product(request, product_id):
+    product = ProductDb.objects.get(id=product_id)
+    categories = CategoryDb.objects.all()
+    return render(request, 'edit_products.html', {'product': product, 'categories': categories})
+def update_product(request, product_id):
+    if request.method == 'POST':
+        categoryname = request.POST.get('categoryname')
+        ProductName = request.POST.get('productname')
+        Price = request.POST.get('price')
+        Description = request.POST.get('description')
+        try:
+            img = request.FILES.get('productimage')
+            fs = FileSystemStorage()
+            file = fs.save(img.name, img)
+        except :
+            file = ProductDb.objects.get(id=product_id).ProductImage
+        ProductDb.objects.filter(id=product_id).update(Category_Name=categoryname,ProductName=ProductName, Price=Price, Description=Description, ProductImage=file)
+        return redirect(view_products)
+def delete_product(request, product_id):
+    product = ProductDb.objects.get(id=product_id)
+    product.delete()
+    return redirect(view_products)
+
+
+
+
+
+
+
 def admin_loginpage(request):
     return render(request, 'admin_login.html')
-
-
-
 
 
 def admin_login(request):
@@ -79,3 +119,6 @@ def admin_logout(request):
     del request.session['username']
     del request.session['password']
     return redirect(admin_loginpage)
+def contact_data(request):
+    contacts = ContactDb.objects.all()
+    return render(request, 'contact_data.html',{'contacts': contacts})

@@ -1,0 +1,53 @@
+from itertools import product
+
+from django.shortcuts import render, redirect
+from AdminApp.models import *
+from WebApp.models import ContactDb, RegistrationDb
+
+
+# Create your views here.
+def Home(request):
+    categories = CategoryDb.objects.all()
+    latest_products = ProductDb.objects.all().order_by('-id')[:8]
+    return render(request, 'Home.html',{'categories': categories, 'latest_products': latest_products})
+def About(request):
+    return render(request, 'About.html')
+def all_products(request):
+    categories = CategoryDb.objects.all()
+    products = ProductDb.objects.all()
+    latest_products = ProductDb.objects.all().order_by('-id')[:3]
+    our_products = ProductDb.objects.all()
+    return render(request, 'all_products.html',{'categories': categories, 'products': products, 'latest_products': latest_products, 'our_products': our_products})
+def FilteredProducts(request,cat_name):
+    products_filtered = ProductDb.objects.filter(Category_Name=cat_name)
+    categories = CategoryDb.objects.all()
+    return render(request, 'Filtered_Products.html',{'products_filtered': products_filtered, 'categories': categories})
+def single_item(request,product_id):
+    single_product = ProductDb.objects.get(id=product_id)
+    return render(request, 'single_item.html',{'single_product': single_product})
+def contact_page(request):
+    return render(request, 'Contact_page.html')
+def save_contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        obj = ContactDb(Name=name, Email=email, Message=message)
+        obj.save()
+        return redirect(contact_page)
+def services(request):
+    return render(request, 'services.html')
+
+def sign_in(request):
+    return render(request, 'sign_in.html')
+def sign_up(request):
+    return render(request, 'sign_up.html')
+def save_sign_up(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        obj = RegistrationDb(UserName=username, Email=email, Password=password, Confirm_Password=confirm_password)
+        obj.save()
+        return redirect(sign_in)
