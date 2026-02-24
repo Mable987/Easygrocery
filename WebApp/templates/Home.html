@@ -119,9 +119,15 @@
                                 <li><a href="#">English</a></li>
                             </ul>
                         </div>
+                        {% if request.session.username %}
+                        <div class="header__top__right__auth">
+                            <a href="{% url 'user_logout' %}"><i class="fa fa-user"></i>Welcome {{request.session.username}} Logout</a>
+                        </div>
+                        {% else %}
                         <div class="header__top__right__auth">
                             <a href="#"><i class="fa fa-user"></i> Login</a>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -150,7 +156,7 @@
                         <li><a href="{% url 'our_products' %}">Products</a></li>
                         <li><a href="./services.html">Services</a></li>
                         <li><a href="{% url 'contact_page' %}">Contact</a></li>
-                        <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                        <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                     </ul>
                 </nav>
             </div>

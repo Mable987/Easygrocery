@@ -49,5 +49,30 @@ def save_sign_up(request):
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
         obj = RegistrationDb(UserName=username, Email=email, Password=password, Confirm_Password=confirm_password)
-        obj.save()
+        if RegistrationDb.objects.filter(UserName=username).exists():
+            print("User already exists")
+            return redirect(sign_up)
+        elif RegistrationDb.objects.filter(Email=email).exists():
+            print("Email already exists")
+            return redirect(sign_up)
+        else:
+            obj.save()
+            return redirect(sign_in)
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if RegistrationDb.objects.filter(UserName=username,Password=password).exists():
+            request.session['username'] = username
+            request.session['password'] = password
+            return redirect(Home)
+        else:
+            return redirect(sign_in)
+    else:
         return redirect(sign_in)
+def user_logout(request):
+    del request.session['username']
+    del request.session['password']
+    return redirect(Home)
+def cart(request):
+    return render(request, 'cart.html')
