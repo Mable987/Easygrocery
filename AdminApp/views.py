@@ -6,6 +6,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 from AdminApp.models import CategoryDb, ProductDb
 from WebApp.models import ContactDb
+from django.contrib import messages
 
 
 # Create your views here.
@@ -24,6 +25,7 @@ def save_category(request):
        categoryimage = request.FILES.get('categoryimage')
        obj = CategoryDb(CategoryName=categoryname, Description=description, CategoryImage=categoryimage)
        obj.save()
+       messages.success(request, 'Category Added Successfully')
        return redirect(add_categories)
 def edit_category(request, category_id):
     data = CategoryDb.objects.get(id=category_id)
@@ -43,6 +45,7 @@ def update_category(request, category_id):
 def delete_category(request, category_id):
     category = CategoryDb.objects.filter(id=category_id)
     category.delete()
+    messages.error(request, 'Category Deleted Successfully')
     return redirect(view_categories)
 
 
@@ -63,6 +66,7 @@ def save_product(request):
         ProductImage = request.FILES.get('productimage')
         obj = ProductDb(Category_Name=CategoryName, ProductName=ProductName, Price=Price, Description=Description,ProductImage=ProductImage)
         obj.save()
+        messages.success(request, 'Product Added Successfully')
         return redirect(add_products)
 def edit_product(request, product_id):
     product = ProductDb.objects.get(id=product_id)
@@ -85,6 +89,7 @@ def update_product(request, product_id):
 def delete_product(request, product_id):
     product = ProductDb.objects.get(id=product_id)
     product.delete()
+    messages.error(request, 'Product Deleted Successfully')
     return redirect(view_products)
 
 

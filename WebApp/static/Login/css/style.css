@@ -217,7 +217,7 @@ body {
 }
 
 .organic-field input:focus + label,
-.organic-field input:not(:placeholder-shown) + label {
+.organic-field input:valid + label {
     top: 0;
     font-size: 13px;
     font-weight: 500;

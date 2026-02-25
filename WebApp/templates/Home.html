@@ -59,7 +59,7 @@
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="./index.html">Home</a></li>
+            <li class="active"><a href="{% url 'home' %}">Home</a></li>
             <li><a href="./shop-grid.html">shop</a></li>
             <li><a href="#">Categories</a>
                 <ul class="header__menu__dropdown">
@@ -121,7 +121,7 @@
                         </div>
                         {% if request.session.username %}
                         <div class="header__top__right__auth">
-                            <a href="{% url 'user_logout' %}"><i class="fa fa-user"></i>Welcome {{request.session.username}} Logout</a>
+                            <a href="{% url 'user_logout' %}"><i class="fa fa-user"></i>Welcome {{request.session.username}} /Logout</a>
                         </div>
                         {% else %}
                         <div class="header__top__right__auth">
@@ -586,9 +586,9 @@
                         <a href="./index.html"><img src="{% static 'web/img/logo.png' %}" alt=""></a>
                     </div>
                     <ul>
-                        <li>Address: 60-49 Road 11378 New York</li>
-                        <li>Phone: +65 11.188.888</li>
-                        <li>Email: hello@colorlib.com</li>
+                        <li>Address: 60-49 Road 11378 kochi</li>
+                        <li>Phone: +91 8978789843</li>
+                        <li>Email: admin@easygrocery.com</li>
                     </ul>
                 </div>
             </div>
