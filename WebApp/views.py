@@ -3,6 +3,7 @@ from itertools import product
 from django.shortcuts import render, redirect
 from AdminApp.models import *
 from WebApp.models import ContactDb, RegistrationDb
+from django.contrib import messages
 
 
 # Create your views here.
@@ -57,6 +58,7 @@ def save_sign_up(request):
             return redirect(sign_up)
         else:
             obj.save()
+            messages.success(request, 'Registration successful')
             return redirect(sign_in)
 def user_login(request):
     if request.method == 'POST':

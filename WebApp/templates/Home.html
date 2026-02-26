@@ -125,7 +125,7 @@
                         </div>
                         {% else %}
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Login</a>
+                            <a href="{% url 'user_login' %}"><i class="fa fa-user"></i> Login</a>
                         </div>
                         {% endif %}
                     </div>
@@ -659,6 +659,7 @@
 <script src="{% static 'web/js/mixitup.min.js' %}"></script>
 <script src="{% static 'web/js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'web/js/main.js' %}"></script>
+
 
 
 </body>
