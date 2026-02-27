@@ -2,7 +2,7 @@ from itertools import product
 
 from django.shortcuts import render, redirect
 from AdminApp.models import *
-from WebApp.models import ContactDb, RegistrationDb
+from WebApp.models import ContactDb, RegistrationDb, CartDb
 from django.contrib import messages
 
 
@@ -77,4 +77,30 @@ def user_logout(request):
     del request.session['password']
     return redirect(Home)
 def cart(request):
-    return render(request, 'cart.html')
+    cart = CartDb.objects.filter(UserName=request.session['username'])
+    sub_total = 0
+    delivery = 0
+    grand_total = 0
+    user_data = CartDb.objects.filter(UserName=request.session['username'])
+    for i in user_data:
+        sub_total += i.TotalPrice
+        if sub_total > 1000:
+            delivery = 0
+        elif sub_total > 500:
+            delivery = 40
+        else:
+            delivery = 70
+            grand_total = sub_total + delivery
+    return render(request, 'cart.html',{'cart': cart , 'sub_total':sub_total, 'delivery':delivery, 'grand_total':grand_total})
+def save_cart(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        productname = request.POST.get('productname')
+        quantity = request.POST.get('quantity')
+        price = request.POST.get('price')
+        totalprice = request.POST.get('total')
+        pro = ProductDb.objects.filter(ProductName=productname).first()
+        img = pro.ProductImage if pro else None
+        obj = CartDb(UserName=username, ProductName=productname,Quantity=quantity,Price=price,TotalPrice=totalprice,ProductImage=img)
+        obj.save()
+        return redirect(cart)
