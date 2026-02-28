@@ -59,7 +59,7 @@
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="./index.html">Home</a></li>
+            <li class="active"><a href="{% url 'home' %}">Home</a></li>
             <li><a href="./shop-grid.html">Shop</a></li>
             <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
@@ -83,7 +83,7 @@
     <div class="humberger__menu__contact">
         <ul>
             <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-            <li>Free Shipping for all Order of $99</li>
+            <li>Free Shipping for all Order of Rs. 1000</li>
         </ul>
     </div>
 </div>
@@ -137,7 +137,7 @@
             <div class="col-lg-6">
                 <nav class="header__menu">
                     <ul>
-                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="{% url 'home' %}">Home</a></li>
                         <li class="active"><a href="./shop-grid.html">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
@@ -281,8 +281,9 @@
                                 Rs.<span class="row-total">{{ i.TotalPrice }}</span>
                             </td>
                             <td class="shoping__cart__item__close">
-                                <span class="icon_close"></span>
+                                <a href="{% url 'delete_cart' cart_id=i.id %}" class="icon_close"></a>
                             </td>
+
                         </tr>
                         {% endfor %}
 

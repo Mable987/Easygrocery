@@ -10,7 +10,11 @@ from django.contrib import messages
 def Home(request):
     categories = CategoryDb.objects.all()
     latest_products = ProductDb.objects.all().order_by('-id')[:8]
-    return render(request, 'Home.html',{'categories': categories, 'latest_products': latest_products})
+    carts = request.session.get('username')
+    cart_count = 0
+    if carts:
+        cart_count = CartDb.objects.filter(UserName=carts).count()
+    return render(request, 'Home.html',{'categories': categories, 'latest_products': latest_products, 'cart_count': cart_count})
 def About(request):
     return render(request, 'About.html')
 def all_products(request):
@@ -25,9 +29,11 @@ def FilteredProducts(request,cat_name):
     return render(request, 'Filtered_Products.html',{'products_filtered': products_filtered, 'categories': categories})
 def single_item(request,product_id):
     single_product = ProductDb.objects.get(id=product_id)
-    return render(request, 'single_item.html',{'single_product': single_product})
+    categories = CategoryDb.objects.all()
+    return render(request, 'single_item.html',{'single_product': single_product, 'categories': categories})
 def contact_page(request):
-    return render(request, 'Contact_page.html')
+    categories = CategoryDb.objects.all()
+    return render(request, 'Contact_page.html',{'categories': categories})
 def save_contact(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -90,7 +96,7 @@ def cart(request):
             delivery = 40
         else:
             delivery = 70
-            grand_total = sub_total + delivery
+        grand_total = sub_total + delivery
     return render(request, 'cart.html',{'cart': cart , 'sub_total':sub_total, 'delivery':delivery, 'grand_total':grand_total})
 def save_cart(request):
     if request.method == 'POST':
@@ -104,3 +110,10 @@ def save_cart(request):
         obj = CartDb(UserName=username, ProductName=productname,Quantity=quantity,Price=price,TotalPrice=totalprice,ProductImage=img)
         obj.save()
         return redirect(cart)
+def delete_cart(request,cart_id):
+    cart_delete = CartDb.objects.filter(id=cart_id)
+    cart_delete.delete()
+    return redirect(cart)
+
+def checkout(request):
+    return render(request, 'checkout.html')
