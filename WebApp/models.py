@@ -19,3 +19,14 @@ class CartDb(models.Model):
     Price = models.FloatField(null=True,blank=True)
     TotalPrice = models.FloatField(null=True,blank=True)
     ProductImage = models.ImageField(upload_to="Cart Images",null=True,blank=True)
+
+class OrderDb(models.Model):
+    FirstName = models.CharField(max_length=100,null=True,blank=True)
+    LastName = models.CharField(max_length=100,null=True,blank=True)
+    Email = models.EmailField(null=True,blank=True)
+    Place = models.CharField(max_length=100,null=True,blank=True)
+    Address = models.CharField(max_length=100,null=True,blank=True)
+    Mobile = models.CharField(max_length=11,null=True,blank=True)
+    State = models.CharField(max_length=100,null=True,blank=True)
+    PinCode = models.CharField(max_length=11,null=True,blank=True)
+    TotalPrice = models.FloatField(null=True,blank=True)

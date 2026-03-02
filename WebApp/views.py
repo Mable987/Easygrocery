@@ -2,7 +2,7 @@ from itertools import product
 
 from django.shortcuts import render, redirect
 from AdminApp.models import *
-from WebApp.models import ContactDb, RegistrationDb, CartDb
+from WebApp.models import ContactDb, RegistrationDb, CartDb, OrderDb
 from django.contrib import messages
 
 
@@ -116,4 +116,19 @@ def delete_cart(request,cart_id):
     return redirect(cart)
 
 def checkout(request):
-    return render(request, 'checkout.html')
+    categories = CategoryDb.objects.all()
+    return render(request, 'checkout.html',{'categories': categories})
+def save_checkout(request):
+    if request.method == 'POST':
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        email = request.POST.get('email')
+        place = request.POST.get('place')
+        address = request.POST.get('address')
+        mobile = request.POST.get('mobile')
+        state = request.POST.get('state')
+        pincode = request.POST.get('pincode')
+        totalprice = request.POST.get('totalprice')
+        obj = OrderDb(FirstName=firstname, LastName=lastname, Email=email, Place=place, Address=address,Mobile=mobile,State=state,PinCode=pincode,TotalPrice=totalprice)
+        obj.save()
+        return redirect(checkout)
