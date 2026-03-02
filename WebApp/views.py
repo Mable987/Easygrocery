@@ -16,7 +16,8 @@ def Home(request):
         cart_count = CartDb.objects.filter(UserName=carts).count()
     return render(request, 'Home.html',{'categories': categories, 'latest_products': latest_products, 'cart_count': cart_count})
 def About(request):
-    return render(request, 'About.html')
+    categories = CategoryDb.objects.all()
+    return render(request, 'About.html',{'categories': categories})
 def all_products(request):
     categories = CategoryDb.objects.all()
     products = ProductDb.objects.all()
@@ -132,3 +133,7 @@ def save_checkout(request):
         obj = OrderDb(FirstName=firstname, LastName=lastname, Email=email, Place=place, Address=address,Mobile=mobile,State=state,PinCode=pincode,TotalPrice=totalprice)
         obj.save()
         return redirect(checkout)
+
+def payment(request):
+    categories = CategoryDb.objects.all()
+    return render(request, 'payment.html',{'categories': categories})

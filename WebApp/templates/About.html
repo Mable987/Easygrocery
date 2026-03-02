@@ -1,10 +1,233 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="description" content="Easy Grocery - Fresh groceries delivered to your doorstep">
+    <meta name="keywords" content="Easy Grocery, online grocery, vegetables, fruits">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easy Grocery | About Us</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/elegant-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/slicknav.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/style.css' %}">
 </head>
+
 <body>
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li>Free Shipping for all Order above Rs. 1000</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="{% static 'web/img/language.png' %}" alt="">
+                            <div>English</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="#">Spanis</a></li>
+                                <li><a href="#">English</a></li>
+                            </ul>
+                        </div>
+                        {% if request.session.username %}
+                        <div class="header__top__right__auth">
+                            <a href="{% url 'user_logout' %}"><i class="fa fa-user"></i>Welcome {{request.session.username}} /Logout</a>
+                        </div>
+                        {% else %}
+                        <div class="header__top__right__auth">
+                            <a href="{% url 'user_login' %}"><i class="fa fa-user"></i> Login</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="{% static 'web/img/logo.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="#">Categories</a>
+                            <ul class="header__menu__dropdown">
+                                {% for i in categories %}
+                                <li><a href="{% url 'filtered_products' cat_name=i.CategoryName %}"> {{ i.CategoryName }}</a></li>
+                                {% endfor %}
+
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'our_products' %}">Products</a></li>
+                        <li><a href="./services.html">Services</a></li>
+                        <li><a href="{% url 'contact_page' %}">Contact</a></li>
+                        {% if request.session.username %}
+                        <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{cart_count}}</span></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__cart">
+
+                </div>
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header End -->
+
+
+<!-- Breadcrumb Section -->
+<section class="breadcrumb-section set-bg" data-setbg="{% static 'web/img/breadcrumb.jpg' %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>About Easy Grocery</h2>
+                    <div class="breadcrumb__option">
+                        <a href="{#}">Home</a>
+                        <span>About Us</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- About Section -->
+<section class="about spad">
+    <div class="container">
+
+        <!-- Introduction -->
+        <div class="row">
+            <div class="col-lg-6">
+                <img src="{% static 'web/img/about.jpg' %}" class="img-fluid" alt="About Easy Grocery">
+            </div>
+            <div class="col-lg-6">
+                <h2>Welcome To Easy Grocery</h2>
+                <p>
+                    Easy Grocery is your trusted online grocery platform providing fresh vegetables,
+                    fruits, dairy products, and daily essentials at affordable prices.
+                </p>
+                <p>
+                    We are dedicated to making grocery shopping simple, fast, and stress-free.
+                    Our goal is to bring high-quality products directly to your doorstep
+                    with reliable and quick delivery service.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="row mt-5">
+            <div class="col-lg-6">
+                <h3>Our Mission</h3>
+                <p>
+                    To provide fresh, hygienic, and affordable grocery products while ensuring
+                    excellent customer service and smooth online shopping experience.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <h3>Our Vision</h3>
+                <p>
+                    To become the most trusted and preferred online grocery store
+                    by delivering quality, convenience, and satisfaction every day.
+                </p>
+            </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div class="row mt-5 text-center">
+            <div class="col-lg-12">
+                <h2>Why Choose Easy Grocery?</h2>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-4">
+                <i class="fa fa-leaf fa-3x text-success mb-3"></i>
+                <h5>Fresh Products</h5>
+                <p>We ensure farm-fresh vegetables and fruits delivered directly to your home.</p>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-4">
+                <i class="fa fa-truck fa-3x text-success mb-3"></i>
+                <h5>Fast Delivery</h5>
+                <p>Quick and reliable doorstep delivery service for your convenience.</p>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-4">
+                <i class="fa fa-lock fa-3x text-success mb-3"></i>
+                <h5>Secure Payment</h5>
+                <p>Safe and secure payment options with complete data protection.</p>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="row mt-5 text-center">
+            <div class="col-lg-12">
+                <h3>Start Shopping With Us Today!</h3>
+                <a href="{#}" class="site-btn mt-3">Shop Now</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Footer Section -->
+<footer class="footer spad">
+    <div class="container text-center">
+        <p>
+            Copyright © <script>document.write(new Date().getFullYear());</script>
+            Easy Grocery. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+
+<!-- JS -->
+<script src="{% static 'web/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'web/js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'web/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'web/js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'web/js/mixitup.min.js' %}"></script>
+<script src="{% static 'web/js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'web/js/main.js' %}"></script>
 
 </body>
 </html>
