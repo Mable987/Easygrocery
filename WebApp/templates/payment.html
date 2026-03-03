@@ -184,6 +184,16 @@
 <!-- JS -->
 <script src="{% static 'web/js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'web/js/bootstrap.min.js' %}"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"
+    data-key = "rzp_test_0ib0jPwwZ7I1lT"
+    data-amount = "{{pay_str}}"
+    data-currency = "INR"
+    data-order_id = "{{payment.order_id}}"
+    data-name = "EasyGrocery"
+    data-description = "Easy Grocery online payment"
+    data-prefil.name = "EasyGrocery"
+    data-theme.color = "#8B0000"
+></script>
 
 </body>
 </html>

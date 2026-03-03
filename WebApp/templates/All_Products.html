@@ -144,7 +144,7 @@
                 <nav class="header__menu">
                     <ul>
                         <li ><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="./shop-grid.html">About</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
                         <li><a href="#">Categories</a>
                             <ul class="header__menu__dropdown">
                                 {% for i in categories %}
@@ -154,7 +154,7 @@
                             </ul>
                         </li>
                         <li class="active"><a href="{% url 'our_products' %}">Products</a></li>
-                        <li><a href="./services.html">Services</a></li>
+                        <li><a href="{% url 'services' %}">Services</a></li>
                         <li><a href="{% url 'contact_page' %}">Contact</a></li>
                         {% if request.session.username %}
                         <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{cart_count}}</span></a></li>
@@ -186,17 +186,10 @@
                         <span>All departments</span>
                     </div>
                     <ul>
-                        <li><a href="#">Fresh Meat</a></li>
-                        <li><a href="#">Vegetables</a></li>
-                        <li><a href="#">Fruit & Nut Gifts</a></li>
-                        <li><a href="#">Fresh Berries</a></li>
-                        <li><a href="#">Ocean Foods</a></li>
-                        <li><a href="#">Butter & Eggs</a></li>
-                        <li><a href="#">Fastfood</a></li>
-                        <li><a href="#">Fresh Onion</a></li>
-                        <li><a href="#">Papayaya & Crisps</a></li>
-                        <li><a href="#">Oatmeal</a></li>
-                        <li><a href="#">Fresh Bananas</a></li>
+                        {% for i in categories %}
+                        <li><a href="{% url 'filtered_products' cat_name=i.CategoryName %}"> {{ i.CategoryName }}</a>
+                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
@@ -373,9 +366,7 @@
             </div>
             <div class="col-lg-9 col-md-7">
                 <div class="product__discount">
-                    <div class="section-title product__discount__title">
-                        <h2> Categories</h2>
-                    </div>
+
                     <div class="row">
                         <div class="product__discount__slider owl-carousel">
                             {% for i in latest_products %}

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from AdminApp.models import *
 from WebApp.models import ContactDb, RegistrationDb, CartDb, OrderDb
 from django.contrib import messages
+import razorpay
 
 
 # Create your views here.
@@ -118,9 +119,24 @@ def delete_cart(request,cart_id):
 
 def checkout(request):
     categories = CategoryDb.objects.all()
-    return render(request, 'checkout.html',{'categories': categories})
+    chekout_proceed = CartDb.objects.filter(UserName=request.session['username'])
+    sub_total = 0
+    grand_total = 0
+    delivery = 0
+    for i in chekout_proceed:
+        sub_total += i.TotalPrice
+        if sub_total > 1000:
+            delivery = 0
+        elif sub_total > 500:
+            delivery = 40
+        else:
+            delivery = 70
+        grand_total = sub_total + delivery
+
+    return render(request, 'checkout.html',{'categories': categories, 'chekout_proceed': chekout_proceed, 'sub_total':sub_total, 'grand_total':grand_total, 'delivery':delivery})
 def save_checkout(request):
     if request.method == 'POST':
+
         firstname = request.POST.get('firstname')
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
@@ -129,11 +145,57 @@ def save_checkout(request):
         mobile = request.POST.get('mobile')
         state = request.POST.get('state')
         pincode = request.POST.get('pincode')
-        totalprice = request.POST.get('totalprice')
-        obj = OrderDb(FirstName=firstname, LastName=lastname, Email=email, Place=place, Address=address,Mobile=mobile,State=state,PinCode=pincode,TotalPrice=totalprice)
-        obj.save()
-        return redirect(checkout)
+
+        username = request.session.get('username')
+
+        cart_items = CartDb.objects.filter(UserName=username)
+
+        sub_total = 0
+        delivery = 0
+
+        for item in cart_items:
+            sub_total += item.TotalPrice
+
+        if sub_total > 1000:
+            delivery = 0
+        elif sub_total > 500:
+            delivery = 40
+        else:
+            delivery = 70
+
+        grand_total = sub_total + delivery
+
+        OrderDb.objects.create(
+            FirstName=firstname,
+            LastName=lastname,
+            Email=email,
+            Place=place,
+            Address=address,
+            Mobile=mobile,
+            State=state,
+            PinCode=pincode,
+            TotalPrice=grand_total   # ✅ ALWAYS SAVE THIS
+        )
+
+        return redirect(payment)
 
 def payment(request):
     categories = CategoryDb.objects.all()
-    return render(request, 'payment.html',{'categories': categories})
+    cart_total = 0
+    username = request.session['username']
+    if username:
+        cart_total = CartDb.objects.filter(UserName=username).count()
+        customer = OrderDb.objects.order_by('-id').first()
+        if not customer:
+            return redirect('checkout')
+
+        if not customer.TotalPrice:
+            return redirect('checkout')
+        pay = customer.TotalPrice or 0
+        amount = int(pay * 100)
+        pay_str =str(amount)
+        if request.method == 'POST':
+            order_currency = "INR"
+            client = razorpay.Client(auth=(' rzp_test_0ib0jPwwZ7I1lT','VjHNO5zKeKxz8PYe7VnzwxMR'))
+            payment = client.order.create({'amount': amount, 'currency': order_currency})
+    return render(request, 'payment.html',{'categories': categories, 'cart_total': cart_total,'pay_str':pay_str})
