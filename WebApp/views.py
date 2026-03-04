@@ -85,6 +85,7 @@ def user_logout(request):
     del request.session['password']
     return redirect(Home)
 def cart(request):
+    categories = CategoryDb.objects.all()
     cart = CartDb.objects.filter(UserName=request.session['username'])
     sub_total = 0
     delivery = 0
@@ -99,7 +100,7 @@ def cart(request):
         else:
             delivery = 70
         grand_total = sub_total + delivery
-    return render(request, 'cart.html',{'cart': cart , 'sub_total':sub_total, 'delivery':delivery, 'grand_total':grand_total})
+    return render(request, 'cart.html',{'cart': cart , 'sub_total':sub_total, 'delivery':delivery, 'grand_total':grand_total,'categories': categories})
 def save_cart(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -116,6 +117,17 @@ def delete_cart(request,cart_id):
     cart_delete = CartDb.objects.filter(id=cart_id)
     cart_delete.delete()
     return redirect(cart)
+def update_cart_quantity(request,cart_id):
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        cart =CartDb.objects.get(id=cart_id)
+        if action == "plus":
+            cart.Quantity += 1
+        elif action == "minus":
+            cart.Quantity -= 1
+        cart.TotalPrice = cart.Quantity * cart.Price
+        cart.save()
+    return redirect('cart')
 
 def checkout(request):
     categories = CategoryDb.objects.all()
@@ -133,7 +145,11 @@ def checkout(request):
             delivery = 70
         grand_total = sub_total + delivery
 
-    return render(request, 'checkout.html',{'categories': categories, 'chekout_proceed': chekout_proceed, 'sub_total':sub_total, 'grand_total':grand_total, 'delivery':delivery})
+    return render(request, 'checkout.html',
+                  {'categories': categories,
+                            'chekout_proceed': chekout_proceed,
+                            'sub_total':sub_total,
+                            'grand_total':grand_total, 'delivery':delivery})
 def save_checkout(request):
     if request.method == 'POST':
 
@@ -174,7 +190,7 @@ def save_checkout(request):
             Mobile=mobile,
             State=state,
             PinCode=pincode,
-            TotalPrice=grand_total   # ✅ ALWAYS SAVE THIS
+            TotalPrice=grand_total
         )
 
         return redirect(payment)

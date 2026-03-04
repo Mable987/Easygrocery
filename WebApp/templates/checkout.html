@@ -145,7 +145,7 @@
                 <nav class="header__menu">
                     <ul>
                         <li ><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="./shop-grid.html">About</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
                         <li><a href="#">Categories</a>
                             <ul class="header__menu__dropdown">
                                 {% for i in categories %}
@@ -155,7 +155,7 @@
                             </ul>
                         </li>
                         <li><a href="{% url 'our_products' %}">Products</a></li>
-                        <li><a href="./services.html">Services</a></li>
+                        <li><a href="{% url 'services' %}">Services</a></li>
                         <li><a href="{% url 'contact_page' %}">Contact</a></li>
                         {% if request.session.username %}
                         <li><a href="{% url 'cart' %}"><i class="fa fa-shopping-bag"></i> <span>{{cart_count}}</span></a></li>
